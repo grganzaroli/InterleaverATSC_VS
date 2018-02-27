@@ -1,0 +1,15 @@
+﻿Build started 26/02/2018 13:32:25.
+     1>Project "C:\Users\Engenharia\Desktop\PDI_VS-master\PDI\PDI\PDI.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\PDI.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt PDI.cpp
+         PDI.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Engenharia\Desktop\PDI_VS-master\PDI\Debug\PDI.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Engenharia\Desktop\PDI_VS-master\PDI\Debug\PDI.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Engenharia\Desktop\PDI_VS-master\PDI\Debug\PDI.lib" /MACHINE:X86 Debug\atsc_interleaver.obj
+         Debug\PDI.obj
+         Debug\stdafx.obj
+         PDI.vcxproj -> C:\Users\Engenharia\Desktop\PDI_VS-master\PDI\Debug\PDI.exe
+     1>Done Building Project "C:\Users\Engenharia\Desktop\PDI_VS-master\PDI\PDI\PDI.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.45

@@ -10,9 +10,7 @@
 
 using namespace std;
 
-#define nbch 10800 //short frame
 #define nldpc 16200 //short frame
-#define qldpc 15 //short frame 10/15
 #define rate 10 // 10/15
 #define mod 64 //64-QAM
 
@@ -24,23 +22,27 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	//Parity
 	unsigned char lamb_inter[nldpc];
-	unsigned char U[nldpc];
-	unsigned char lamb_deinter[nldpc];
+	unsigned char U_inter[nldpc];
+	float U_deinter[nldpc];
+	float lamb_deinter[nldpc];
 
 	//Group
 	unsigned char Y_inter[nldpc];
-	unsigned char V[nldpc];
-	unsigned char Y_deinter[nldpc];
+	unsigned char V_inter[nldpc];
+	float V_deinter[nldpc];
+	float Y_deinter[nldpc];
 
 	//Block Tipo A
 	unsigned char BTA_inter[nldpc];
-	unsigned char X[nldpc];
-	unsigned char BTA_deinter[nldpc];
+	unsigned char X_inter[nldpc];
+	float X_deinter[nldpc];
+	float BTA_deinter[nldpc];
 
 	//Block Tipo B
 	unsigned char BTB_inter[nldpc];
-	unsigned char Z[nldpc];
-	unsigned char BTB_deinter[nldpc];
+	unsigned char Z_inter[nldpc];
+	float Z_deinter[nldpc];
+	float BTB_deinter[nldpc];
 
 	for(int i = 0; i < nldpc; i++)
 	{
@@ -50,16 +52,21 @@ int _tmain(int argc, _TCHAR* argv[])
 		BTB_inter[i] = i;
 	}
 
-	I.set(nbch, qldpc, rate, mod);
+	I.set(nldpc, rate, mod);
 
 	int tab_short_r10_mod64[45] = {14, 22, 18, 11, 28, 26, 2, 38, 10, 0, 5, 12, 24, 17, 29, 16, 39, 13, 23, 8, 25, 43, 34, 33, 27, 15, 7, 1, 9, 35, 40, 32, 30, 20, 36, 31, 21, 41, 44, 3, 42, 6, 19, 37, 4}; //tabela B.2.3 p/ short frame, 10/15, 64-QAM
 
 
 	//PARITY INTERLEAVER -----------------------------------------------------------------------------------------------------
 
-	I.parity_interleaver(lamb_inter, U);
+	I.parity_inter(lamb_inter, U_inter);
 
-	I.parity_deinterleaver(U, lamb_deinter);
+	for(int i = 0; i < nldpc; i++)
+	{
+		U_deinter[i] = U_inter[i];
+	}
+
+	I.parity_deinter(U_deinter, lamb_deinter);
 
 	f = fopen("teste_PI.txt", "w");
 
@@ -69,25 +76,32 @@ int _tmain(int argc, _TCHAR* argv[])
 		fprintf(f, "%i ", lamb_inter[i]);
 	}
 	fprintf(f, "\n");
-	fprintf(f, "U = ");
+	fprintf(f, "U_inter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", U[i]);
+		fprintf(f, "%i ", U_inter[i]);
 	}
 	fprintf(f, "\n");
 	fprintf(f, "lamb_deinter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", lamb_deinter[i]);
+		fprintf(f, "%.0lf ", lamb_deinter[i]);
 	}
 	fprintf(f, "\n");
 	fclose(f);
 
+	printf("");
+
 	//GROUP-WISE INTERLEAVER -----------------------------------------------------------------------------------------------------
 
-	I.group_interleaver(Y_inter, V, tab_short_r10_mod64);
+	I.group_inter(Y_inter, V_inter);
 
-	I.group_deinterleaver(V, Y_deinter, tab_short_r10_mod64);
+	for(int i = 0; i < nldpc; i++)
+	{
+		V_deinter[i] = V_inter[i];
+	}
+
+	I.group_deinter(V_deinter, Y_deinter);
 
 	f = fopen("teste_GI.txt", "w");
 
@@ -97,25 +111,32 @@ int _tmain(int argc, _TCHAR* argv[])
 		fprintf(f, "%i ", Y_inter[i]);
 	}
 	fprintf(f, "\n");
-	fprintf(f, "V = ");
+	fprintf(f, "V_inter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", V[i]);
+		fprintf(f, "%i ", V_inter[i]);
 	}
 	fprintf(f, "\n");
 	fprintf(f, "Y_deinter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", Y_deinter[i]);
+		fprintf(f, "%.0lf ", Y_deinter[i]);
 	}
 	fprintf(f, "\n");
 	fclose(f);
 
+	printf("");
+
 	//BLOCK INTERLEAVER TIPO A -----------------------------------------------------------------------------------------------------
 
-	I.block_interleaver(BTA_inter, X, 0);
+	I.block_inter(BTA_inter, X_inter);
 
-	I.block_deinterleaver(X, BTA_deinter, 0);
+	for(int i = 0; i < nldpc; i++)
+	{
+		X_deinter[i] = X_inter[i];
+	}
+
+	I.block_deinter(X_deinter, BTA_deinter);
 
 	f = fopen("teste_BI_Tipo_A.txt", "w");
 
@@ -125,25 +146,32 @@ int _tmain(int argc, _TCHAR* argv[])
 		fprintf(f, "%i ", BTA_inter[i]);
 	}
 	fprintf(f, "\n");
-	fprintf(f, "X = ");
+	fprintf(f, "X_inter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", X[i]);
+		fprintf(f, "%i ", X_inter[i]);
 	}
 	fprintf(f, "\n");
 	fprintf(f, "BTA_deinter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", BTA_deinter[i]);
+		fprintf(f, "%.0lf ", BTA_deinter[i]);
 	}
 	fprintf(f, "\n");
 	fclose(f);
 
+	printf("");
+
 	//BLOCK INTERLEAVER TIPO B -----------------------------------------------------------------------------------------------------
 
-	I.block_interleaver(BTB_inter, Z, 1);
+	I.block_inter(BTB_inter, Z_inter);
 
-	I.block_deinterleaver(Z, BTB_deinter, 1);
+	for(int i = 0; i < nldpc; i++)
+	{
+		Z_deinter[i] = Z_inter[i];
+	}
+
+	I.block_deinter(Z_deinter, BTB_deinter);
 
 	f = fopen("teste_BI_Tipo_B.txt", "w");
 
@@ -153,16 +181,16 @@ int _tmain(int argc, _TCHAR* argv[])
 		fprintf(f, "%i ", BTB_inter[i]);
 	}
 	fprintf(f, "\n");
-	fprintf(f, "Z = ");
+	fprintf(f, "Z_inter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", Z[i]);
+		fprintf(f, "%i ", Z_inter[i]);
 	}
 	fprintf(f, "\n");
 	fprintf(f, "BTB_deinter = ");
 	for(int i = 0; i < nldpc; i++)
 	{
-		fprintf(f, "%i ", BTB_deinter[i]);
+		fprintf(f, "%.0lf ", BTB_deinter[i]);
 	}
 	fprintf(f, "\n");
 	fclose(f);
